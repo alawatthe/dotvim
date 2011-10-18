@@ -27,13 +27,13 @@ nmap <space> :
 " Editor look and feel
 "========================================
 
-set ruler									" Display current cursor position in lower right corner.
-set number								" Show lines numbers (relativenumber for relative numbering)
-set showcmd								" Show command in bottom right portion of the screen
+set ruler                 " Display current cursor position in lower right corner.
+set number                " Show lines numbers (relativenumber for relative numbering)
+set showcmd               " Show command in bottom right portion of the screen
 set mousehide             " Hide mouse when typing
 set showmatch             " show matching brackets
 set cursorline            " Highlights the current line
-set linespace=3					  " Setting the line space
+set linespace=3           " Setting the line space
 set scrolloff=3           " Scroll 3 lines before top/bottom
 set laststatus=2          " Always show the status line
 set numberwidth=1         " using only 1 column (and 1 space) while possible
@@ -42,8 +42,8 @@ if &t_Co > 2 || has("gui_running")
   syntax on               " Turn syntax highlighting on
 endif
 
-colorscheme eternity  		" Color scheme
-set guifont=Menlo:h12			" Set font type and size. Depends on the resolution.
+colorscheme eternity      " Color scheme
+set guifont=Menlo:h12     " Set font type and size. Depends on the resolution.
 "set guifont="Meslo LG M DZ":h13
 
 "Hide MacVim toolbar by default
@@ -77,18 +77,27 @@ nnoremap <leader>q gwip
 "========================================
 
 set encoding=utf-8                " set the encoding to utf-8
-set vb t_vb=                      " switch off the beep
-set noerrorbells                  " switch off the beep
+set vb t_vb=                      " don't beep
+set noerrorbells                  " I said don't beep
 set nobackup                      " no backup file
 set noswapfile                    " now .swp file
 set history=100                   " create a larger history
 set helplang=de                   " set your prefered help language, english is the fallback
 set backspace=indent,eol,start    " allow backspacing over everthing in insert mode
-set autoread		                  " auto read when file is changed from outside
+set autoread                      " auto read when file is changed from outside
 set noautowrite                   " Never write a file unless I request it.
 set noautowriteall                " NEVER.
-         
-             
+
+" set the timeout between typing keys and interpretation of the sequence
+set timeout
+set timeoutlen=1000
+set ttimeout
+set ttimeoutlen=100
+
+"Opens a vertical split and switches over
+nnoremap <leader>v <C-w>v<C-w>l
+
+
 "========================================
 " Movement stuff
 "========================================
@@ -99,7 +108,7 @@ nmap <C-j> <C-w>j
 nmap <C-k> <C-w>k
 nmap <C-l> <C-w>l
 
-"Bubble single lines  (ctrl and ↑ or ↓)
+"Bubble single lines (ctrl and ↑ or ↓)
 nmap <C-Up> ddkP
 nmap <C-Down> ddp
 
@@ -123,6 +132,16 @@ nmap <D-0> g0
 vnoremap < <gv
 vnoremap > >gv
 
+" Train yourself to use hjkl.  Disable arrow keys
+" Really, do it!
+inoremap <Up> <NOP>
+inoremap <Down> <NOP>
+inoremap <Left> <NOP>
+inoremap <Right> <NOP>
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
 
 "========================================
 " Search stuff
@@ -165,13 +184,24 @@ nmap <leader>l :set list!<CR>
 
 set hidden    " Switch between buffers without saving
 
+" Map a change directory to the desktop - Mac specific
+nmap <leader>d :cd ~/Desktop<cr>:e.<cr>
+
+" Automatically change current directory to that of the file in the buffer
+autocmd BufEnter * cd %:p:h
+
+" Shortcut for editing vimrc file in a new tab
+nmap <leader>ev :tabedit $MYVIMRC<cr>
+
+" Get to home dir
+nmap <leader>hm :cd ~/ <CR>
+
 "Load the current buffer in a browser
 abbrev ff :! open -a firefox.app %:p<cr>
 abbrev chrome :! open -a Google\ Chrome.app %:p<cr>
 abbrev safari :! open -a Safari.app %:p<cr>
 abbrev opera :! open -a Opera.app %:p<cr>
 abbrev chromium :! open -a Chromium.app %:p<cr>
-
 
 
 "========================================
@@ -185,10 +215,10 @@ map <leader>tc :tabclose<cr>
 
 
 "========================================
-" Plug-in Stuff
+" Plug-ins
 "========================================
 
-"Change zen coding plug-in expansion key to shift + e
+"Change sparkup coding plug-in expansion key to cmd + e
 let g:sparkupExecuteMapping = '<D-e>'
 
 "Faster shortcut for commenting. Requires T-Comment plug-in
@@ -201,7 +231,7 @@ nmap <leader>nt :NERDTreeToggle <CR>
 let NERDTreeShowHidden=1      " Show hidden files, too
 let NERDTreeShowBookmarks=1   " Show the bookmarks table on startup
 
-let NERDTreeIgnore=[ '\.DS_Store$', '\.swp$']
+let NERDTreeIgnore=[ '\.DS_Store$', '\.swp$'] " Don't show .DS_Store and .swp files
 
 
 "autopen NERDTree and focus cursor in new document
@@ -222,8 +252,8 @@ iab Teh The
 iab lenght length
 
 iab jquery <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-iab fori for(i=0; i< ; i++){
-iab jfunc function (){<CR><CR>return ;<CR>}jjkki 
+iab fori for (var i = 0; i <; i++) {
+iab jfunc function () {return;<Esc>i
 
 inoremap { {<CR><BS>}<Esc>ko
 
@@ -231,18 +261,8 @@ inoremap { {<CR><BS>}<Esc>ko
 "=============================================================================================================================================================
 "=============================================================================================================================================================
 "=============================================================================================================================================================
-"=============================================================================================================================================================
-"=============================================================================================================================================================
-
-"Ever notice a slight lag after typing the leader key + command? This lowers the timeout.
-set timeoutlen=500
 
 
-" Create dictionary for custom expansions
-set dictionary+=/Users/Alexander/.vim/dict.txt
-
-"Opens a vertical split and switches over (\v)
-nnoremap <leader>v <C-w>v<C-w>l
 
 "Split windows below the current window.
 set splitbelow
@@ -251,21 +271,7 @@ set splitbelow
 set sessionoptions=resize,winpos,winsize,buffers,tabpages,folds,curdir,help
 
 "Set up an HTML5 template for all new .html files
-"autocmd BufNewFile * silent! 0r $VIMHOME/templates/%:e.tpl
-
-
-"Map a change directory to the desktop - Mac specific
-nmap <leader>d :cd ~/Desktop<cr>:e.<cr>
-
-"Shortcut for editing vimrc file in a new tab
-nmap <leader>ev :tabedit $MYVIMRC<cr>
-
-
-
-
-
-"Automatically change current directory to that of the file in the buffer
-autocmd BufEnter * cd %:p:h
+autocmd! BufNewFile * silent! 0r ~/.vim/templates/tmpl.%:e
 
 "Map code completion to , + tab
 imap <leader><tab> <C-x><C-o>
@@ -290,25 +296,6 @@ inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
 nmap <silent> ,da :exec "1," . bufnr('$') . "bd"<cr>
 
 
-
-
-
-
-" Train yourself to use hjkl
-" Disable arrow keys
-inoremap <Up> <NOP>
-inoremap <Down> <NOP>
-inoremap <Left> <NOP>
-inoremap <Right> <NOP>
-noremap <Up> <NOP>
-noremap <Down> <NOP>
-noremap <Left> <NOP>
-noremap <Right> <NOP>
-
-" Get to home dir easier
-" <leader>hm is easier to type than :cd ~
-nmap <leader>hm :cd ~/ <CR>
-
 " Alphabetically sort CSS properties in file with :SortCSS
 :command! SortCSS :g#\({\n\)\@<=#.,/}/sort
 
@@ -317,10 +304,7 @@ nmap <leader>hm :cd ~/ <CR>
 nmap <leader>bv :bel vsp
 
 " Saves file when Vim window loses focus
-au FocusLost * :wa
-
-"Write the old file out when switching between files.
-set autowrite
+" au FocusLost * :wa
 
 
 " No more stretching for navigating files
@@ -331,10 +315,6 @@ set autowrite
 "noremap ; l
 
 
-" print empty <a> tag
-map! ;h <a href=""></a><ESC>5hi
-
-
 
 " Bigger functions
 " ================
@@ -342,13 +322,13 @@ map! ;h <a href=""></a><ESC>5hi
 " Source the vimrc file after saving it. This way, you don't have to reload Vim to see the changes.
 if has("autocmd")
  augroup myvimrchooks
-	au!
-	autocmd bufwritepost .vimrc source ~/.vimrc
+  au!
+  autocmd bufwritepost .vimrc source ~/.vimrc
  augroup END
 endif
 
 
-
+" Run JSHint when saving a .js file
 if has("autocmd")
   autocmd bufWritePost *.js :JSHint
 endif
@@ -356,17 +336,16 @@ endif
 " Remove trailing white space when saving (enabled for .py, .js and .css)
 autocmd BufWritePre *.py,*.js,*.css :call <SID>StripTrailingWhitespaces()
 function! <SID>StripTrailingWhitespaces()
-		" Preparation: save last search, and cursor position.
-		let _s=@/
-		let l = line(".")
-		let c = col(".")
-		" Do the business:
-		%s/\s\+$//e
-		" Clean up: restore previous search history, and cursor position
-		let @/=_s
-		call cursor(l, c)
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  %s/\s\+$//e
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
 endfunction
-
 
 
 " Show syntax highlighting groups for word under cursor
@@ -379,44 +358,30 @@ function! <SID>SynStack()
 endfunc
 
 
-
-
-
 " Set tabstop, softtabstop and shiftwidth to the same value
 command! -nargs=* Stab call Stab()
 function! Stab()
-	let l:tabstop = 1 * input('set tabstop = softtabstop = shiftwidth = ')
-	if l:tabstop > 0
-		let &l:sts = l:tabstop
-		let &l:ts = l:tabstop
-		let &l:sw = l:tabstop
-	endif
-	call SummarizeTabs()
+  let l:tabstop = 1 * input('set tabstop = softtabstop = shiftwidth = ')
+  if l:tabstop > 0
+    let &l:sts = l:tabstop
+    let &l:ts = l:tabstop
+    let &l:sw = l:tabstop
+  endif
+  call SummarizeTabs()
 endfunction
-	
+
 function! SummarizeTabs()
-	try
-		echohl ModeMsg
-		echon 'tabstop='.&l:ts
-		echon ' shiftwidth='.&l:sw
-		echon ' softtabstop='.&l:sts
-		if &l:et
-			echon ' expandtab'
-		else
-			echon ' noexpandtab'
-		endif
-	finally
-		echohl None
-	endtry
+  try
+    echohl ModeMsg
+    echon 'tabstop='.&l:ts
+    echon ' shiftwidth='.&l:sw
+    echon ' softtabstop='.&l:sts
+    if &l:et
+      echon ' expandtab'
+    else
+      echon ' noexpandtab'
+    endif
+  finally
+    echohl None
+  endtry
 endfunction
-
-"jceb
-
-" vgod
-" nvie
-" skyl
-" sontek
-"
-" carllerche
-" bitprophet
-" feelinglucky
